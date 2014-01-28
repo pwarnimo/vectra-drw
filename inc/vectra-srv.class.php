@@ -42,4 +42,8 @@ class VectraServer {
         $stmt->execute();
 
     }
+
+    public function getAvailableDrawings() {
+
+    }
 }
