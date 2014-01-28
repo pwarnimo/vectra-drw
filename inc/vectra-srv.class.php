@@ -44,6 +44,12 @@ class VectraServer {
     }
 
     public function getAvailableDrawings() {
+        $qry = "SELECT idDrawing FROM tblDrawing";
+
+        $stmt = $this->dbh->prepare($qry);
+
+        $stmt->execute(PDO::FETCH_ASSOC);
+
 
     }
 }
