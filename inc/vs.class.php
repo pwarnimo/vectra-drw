@@ -30,8 +30,11 @@ class VectraServer {
 		$drawing->value = "";
 		
 		$user = $xml->createAttribute("user");
+		$user->value = "";
 		
 		$root->appendChild($cmd);
+		$root->appendChild($user);
+		$root->appendChild($drawing);
 	
 		try {
 			$qry = "SELECT * FROM tblDrawing";
@@ -62,5 +65,9 @@ class VectraServer {
 	
 	public function debug() {
 		echo "<pre>VECTRA SERVER OK</pre>";
+	}
+	
+	public function version() {
+		return "<pre><img style=\"float:left; margin-right:5px;\" src=\"img/vectra-logo.png\">VECTRA SERVER 0.1<br>" . date("Y\-m\-d H\:i\:s") . "<br>Copyright &copy;2014 Warnimont Pol</pre>";
 	}
 }
