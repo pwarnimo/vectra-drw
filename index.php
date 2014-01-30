@@ -32,6 +32,10 @@ switch ($cmd) {
 		echo $vcs->createDrawing($vals[0]["attributes"]["DRAWING"]);
 	
 		break;
+		
+	case "update" :
+	
+		break;
 }
 
 //echo file_get_contents('php://input');
