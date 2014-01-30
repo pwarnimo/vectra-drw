@@ -13,6 +13,18 @@ if (isset($_GET["action"])) {
 			
 			break;
 			
+		case "createDrawing" :
+			Header("Content-type: text/xml");
+			echo $vcs->createDrawing("testing1337");
+		
+			break;
+			
+		case "createUser" :
+			Header("Content-type: text/xml");
+			echo $vcs->createUser("pwarnimo");
+			
+			break;
+			
 		default :
 			echo $vcs->version();
 			

@@ -63,6 +63,196 @@ class VectraServer {
 		}
 	}
 	
+	public function createDrawing($drawing) {
+		try {
+			$qry = "INSERT INTO tblDrawing (idDrawing) VALUES (:drawing)";
+			
+			$stmt = $this->dbh->prepare($qry);
+			$stmt->bindValue(":drawing", $drawing, PDO::PARAM_STR);
+			
+			if ($stmt->execute()) {
+				$xml = new DOMDocument("1.0");
+		
+				$root = $xml->createElement("ok");
+			
+				$xml->appendChild($root);
+			
+				return $xml->saveXML();
+			}
+			else {
+				$xml = new DOMDocument("1.0");
+		
+				$root = $xml->createElement("message");
+			
+				$cmd = $xml->createAttribute("cmd");
+				$cmd->value = "error";
+				
+				$drawing = $xml->createAttribute("drawing");
+				$drawing->value = "";
+				
+				$user = $xml->createAttribute("user");
+				$user->value = "";
+			
+				$root->appendChild($cmd);
+				$root->appendChild($user);
+				$root->appendChild($drawing);
+			
+				$xml->appendChild($root);
+			
+				return $xml->saveXML();
+			}
+		}
+		catch(PDOException $e) {
+			echo "<pre>PDO has encountered an error: " + $e->getMessage() + "</pre>";
+			die();
+		}
+	}
+	
+	public function createUser($username) {
+		try {
+			$qry = "INSERT INTO tblUser (idUser) VALUES (:username)";
+			
+			$stmt = $this->dbh->prepare($qry);
+			$stmt->bindValue(":username", $username, PDO::PARAM_STR);
+			
+			if ($stmt->execute()) {
+				$xml = new DOMDocument("1.0");
+		
+				$root = $xml->createElement("ok");
+			
+				$xml->appendChild($root);
+			
+				return $xml->saveXML();
+			}
+			else {
+				$xml = new DOMDocument("1.0");
+		
+				$root = $xml->createElement("message");
+			
+				$cmd = $xml->createAttribute("cmd");
+				$cmd->value = "error";
+				
+				$drawing = $xml->createAttribute("drawing");
+				$drawing->value = "";
+				
+				$user = $xml->createAttribute("user");
+				$user->value = "";
+			
+				$root->appendChild($cmd);
+				$root->appendChild($user);
+				$root->appendChild($drawing);
+			
+				$xml->appendChild($root);
+			
+				return $xml->saveXML();
+			}
+		}
+		catch(PDOException $e) {
+			echo "<pre>PDO has encountered an error: " + $e->getMessage() + "</pre>";
+			die();
+		}
+	}
+	
+	private function updateUserTimestamp($username, $timestamp) {
+		try {
+			$qry = "UPDATE tblUser SET dtLastUpdate = :timestamp WHERE idUser = :username";
+			
+			$stmt = $this->dbh->prepare($qry);
+			$stmt->bindValue(":timestamp", $timestamp, PDO::PARAM_STR);
+			$stmt->bindValue(":username", $username, PDO::PARAM_STR);
+			
+			if ($stmt->execute()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		catch(PDOException $e) {
+			echo "<pre>PDO has encountered an error: " + $e->getMessage() + "</pre>";
+			die();
+		}
+	}
+	
+	public function addShape($x, $y, $width, $height, $color, $type, $filled, $drawing, $username) {
+		try {
+			$timestamp = date("Y\-m\-d H\:i\:s");
+		
+			$qry = "INSERT INTO tblElement (dtX, dtY, dtWidth, dtHeight, dtColor, dtType, dtFilled, dtLastUpdate, fiDrawing) VALUES (:x, :y, :width, :height, :color, :type, :filled, :timestamp, :drawing)";
+		
+			$stmt = $this->dbh->prepare($qry);
+			$stmt->bindValue(":x", $x, PDO::PARAM_INT);
+			$stmt->bindValue(":y", $y, PDO::PARAM_INT);
+			$stmt->bindValue(":width", $width, PDO::PARAM_INT);
+			$stmt->bindValue(":height", $height, PDO::PARAM_INT);
+			$stmt->bindValue(":color", $color, PDO::PARAM_STR);
+			$stmt->bindValue(":type", $type, PDO::PARAM_INT);
+			$stmt->bindValue(":filled", $filled, PDO::PARAM_BOOL);
+			$stmt->bindValue(":timestamp", $timestamp, PDO::PARAM_STR);
+			$stmt->bindValue(":drawing", $drawing, PDO::PARAM_STR);
+			
+			if ($stmt->execute()) {
+				if (updateUserTimestamp($username, $timestamp)) {
+					$xml = new DOMDocument("1.0");
+		
+					$root = $xml->createElement("ok");
+				
+					$xml->appendChild($root);
+				
+					return $xml->saveXML();
+				}
+				else {
+					$xml = new DOMDocument("1.0");
+		
+					$root = $xml->createElement("message");
+				
+					$cmd = $xml->createAttribute("cmd");
+					$cmd->value = "error";
+					
+					$drawing = $xml->createAttribute("drawing");
+					$drawing->value = "";
+					
+					$user = $xml->createAttribute("user");
+					$user->value = "";
+				
+					$root->appendChild($cmd);
+					$root->appendChild($user);
+					$root->appendChild($drawing);
+				
+					$xml->appendChild($root);
+				
+					return $xml->saveXML();
+				}
+			}
+			else {
+				$xml = new DOMDocument("1.0");
+		
+				$root = $xml->createElement("message");
+			
+				$cmd = $xml->createAttribute("cmd");
+				$cmd->value = "error";
+				
+				$drawing = $xml->createAttribute("drawing");
+				$drawing->value = "";
+				
+				$user = $xml->createAttribute("user");
+				$user->value = "";
+			
+				$root->appendChild($cmd);
+				$root->appendChild($user);
+				$root->appendChild($drawing);
+			
+				$xml->appendChild($root);
+			
+				return $xml->saveXML();
+			}
+		}
+		catch(PDOException $e) {
+			echo "<pre>PDO has encountered an error: " + $e->getMessage() + "</pre>";
+			die();
+		}
+	}
+	
 	public function debug() {
 		echo "<pre>VECTRA SERVER OK</pre>";
 	}
