@@ -7,83 +7,53 @@ $vcs = new VectraServer();
 
 $p = xml_parser_create();
 
-xml_parse_into_struct($p, file_get_contents('php://input'), $vals, $index);
-xml_parser_free($p);
-
-$cmd = $vals[0]["attributes"]["CMD"];
-
-/*if ($cmd === "drawings") {
-	Header("Content-type: text/xml");
-	echo $vcs->getAvailableDrawings();
+if (file_get_contents('php://input') == NULL) {
+	echo $vcs->version();
 }
-else if ($cmd === "create") {
-	$vcs->createDrawing($vals[0]["attributes"]["DRAWING"]);
-}*/
+else {
+	xml_parse_into_struct($p, file_get_contents('php://input'), $vals, $index);
+	xml_parser_free($p);
 
-switch ($cmd) {
-	case "drawings" :
-		Header("Content-type: text/xml");
-		echo $vcs->getAvailableDrawings();
-	
-		break;
-		
-	case "create" :
-		Header("Content-type: text/xml");
-		echo $vcs->createDrawing($vals[0]["attributes"]["DRAWING"]);
-	
-		break;
-		
-	case "update" :
-	
-		break;
-}
+	$cmd = $vals[0]["attributes"]["CMD"];
 
-//echo file_get_contents('php://input');
-
-//var_dump($_POST);
-
-//$dataPOST = trim(file_get_contents('php://input'));
-/*$xmlData = simplexml_load_string(file_get_contents('php://input'));
-
-$xml = simplexml_load_string($xmlData->asXML());
-
-echo $xml->message->attributes()->cmd;*/
-
-//echo $xmlData->message->attributes()->cmd;
-
-//$vcs->debug();
-
-/*if (isset($_POST["xml"])) {
-	$dataPOST = trim(file_get_contents('php://input'));
-	$xmlData = simplexml_load_string($dataPOST);
-
-	echo $xmlData;
-	
-	/*switch ($_GET["action"]) {
+	switch ($cmd) {
 		case "drawings" :
 			Header("Content-type: text/xml");
 			echo $vcs->getAvailableDrawings();
-			
-			break;
-			
-		case "createDrawing" :
-			Header("Content-type: text/xml");
-			echo $vcs->createDrawing("testing1337");
 		
 			break;
 			
-		case "createUser" :
+		case "create" :
 			Header("Content-type: text/xml");
-			echo $vcs->createUser("pwarnimo");
-			
+			echo $vcs->createDrawing($vals[0]["attributes"]["DRAWING"]);
+		
 			break;
 			
-		default :
-			echo $vcs->version();
-			
+		case "update" :
+			$shape = $vals[1]["attributes"];
+		
+			Header("Content-type: text/xml");
+			echo $vcs->addShape($shape["X"], $shape["Y"], $shape["WIDTH"], $shape["HEIGHT"], $shape["COLOR"], $shape["TYPE"], $shape["FILLED"], $vals[0]["attributes"]["DRAWING"], $vals[0]["attributes"]["USER"]);
+		
 			break;
-	}*/
-/*}
-else {
-	echo $vcs->version();
-}*/
+			
+		case "load" :
+			$drawing = $vals[0]["attributes"]["DRAWING"];
+		
+			Header("Content-type: text/xml");
+			echo $vcs->loadShapesFromDrawing($drawing);
+		
+			break;
+			
+		case "diff" :
+			$drawing = $vals[0]["attributes"]["DRAWING"];
+			$user = $vals[0]["attributes"]["USER"];
+		
+			Header("Content-type: text/xml");
+			//echo $vcs->loadDiff($vals[0]["attributes"]["USER"], $drawing);
+			
+			echo $vcs->loadDiff("pwarnimo", "CassieHicks");
+		
+			break;
+	}
+}
