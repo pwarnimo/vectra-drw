@@ -366,6 +366,7 @@ class VectraServer {
 			$stmt = $this->dbh->prepare($qry);
 			$stmt->bindValue(":drawing", $drw, PDO::PARAM_STR);
 			$stmt->bindValue(":timestamp", $lastUpd[0], PDO::PARAM_STR);
+			$stmt->execute();
 		
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			
