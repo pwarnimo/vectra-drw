@@ -413,6 +413,9 @@ class VectraServer {
 				$root->appendChild($element);
 			}
 			
+			//$test = $xml->createElement("test");
+			//$root->appendChild($test);
+			
 			$xml->appendChild($root);
 			
 			return $xml->saveXML();

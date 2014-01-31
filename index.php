@@ -50,9 +50,9 @@ else {
 			$user = $vals[0]["attributes"]["USER"];
 		
 			Header("Content-type: text/xml");
-			//echo $vcs->loadDiff($vals[0]["attributes"]["USER"], $drawing);
+			echo $vcs->loadDiff($vals[0]["attributes"]["USER"], $drawing);
 			
-			echo $vcs->loadDiff("pwarnimo", "CassieHicks");
+			//echo $vcs->loadDiff("pwarnimo", "CassieHicks");
 		
 			break;
 	}
