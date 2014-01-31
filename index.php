@@ -1,5 +1,10 @@
 <?php
-//include "inc/vs.class.php";
+/*
+ * Vectra Server 1.0
+ *
+ * This file is used to process the specific XML requests.
+ *
+ */
 
 include(dirname(__FILE__) . "/inc/vs.class.php");
 
@@ -51,8 +56,6 @@ else {
 		
 			Header("Content-type: text/xml");
 			echo $vcs->loadDiff($vals[0]["attributes"]["USER"], $drawing);
-			
-			//echo $vcs->loadDiff("pwarnimo", "CassieHicks");
 		
 			break;
 	}

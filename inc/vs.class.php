@@ -1,5 +1,11 @@
 <?php
-
+/*
+ * Vectra Server 1.0
+ *
+ * This class contains the main logic of the Vectra Server.
+ *
+ */
+ 
 include_once("config.inc.php");
 
 class VectraServer {
@@ -275,7 +281,7 @@ class VectraServer {
 			$qry = "SELECT * FROM tblElement WHERE fiDrawing = :drawing";
 			
 			$stmt = $this->dbh->prepare($qry);
-			$stmt->bindValue(":drawing", "CassieHicks", PDO::PARAM_STR);
+			$stmt->bindValue(":drawing", $drw, PDO::PARAM_STR);
 			
 			$stmt->execute();
 			
@@ -413,9 +419,6 @@ class VectraServer {
 				$root->appendChild($element);
 			}
 			
-			//$test = $xml->createElement("test");
-			//$root->appendChild($test);
-			
 			$xml->appendChild($root);
 			
 			return $xml->saveXML();
@@ -431,6 +434,6 @@ class VectraServer {
 	}
 	
 	public function version() {
-		return "<pre><img style=\"float:left; margin-right:5px;\" src=\"img/vectra-logo.png\">VECTRA SERVER 0.9<br>" . date("Y\-m\-d H\:i\:s") . "<br>Copyright &copy;2014 Warnimont Pol</pre>";
+		return "<pre><img style=\"float:left; margin-right:5px;\" src=\"img/vectra-logo.png\">VECTRA SERVER 1.0<br>" . date("Y\-m\-d H\:i\:s") . "<br>Copyright &copy;2014 Warnimont Pol</pre>";
 	}
 }
